@@ -25,7 +25,7 @@ public class RegisterGUI extends JFrame {
         // Creaza regPanel pentru elementele principale din fereastra
         JPanel regPanel = new JPanel();
         regPanel.setBackground(Color.CYAN);
-        regPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,20));
+        regPanel.setLayout(new FlowLayout(FlowLayout.LEFT,15,20));
         // Creaza textul "First name"
         firstNameLabel = new JLabel("First Name");
         firstNameLabel.setFont(new Font("Arial",Font.BOLD,16));
