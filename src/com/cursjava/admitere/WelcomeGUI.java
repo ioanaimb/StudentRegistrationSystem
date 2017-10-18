@@ -1,14 +1,22 @@
 package com.cursjava.admitere;
 /* Prima fereastra - Welcome */
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Statement;
 
 public class WelcomeGUI extends JFrame {
     JButton exitButton, registerButton, listButton;
+    BufferedImage img;
+    Statement myStmt;
 
-    public WelcomeGUI() {
+    public WelcomeGUI(Statement myStmt) {
+        this.myStmt = myStmt;
         // Titlul ferestrei
         this.setTitle("Student Registration System");
         // Modalitatea de inchidere a ferestrei
@@ -18,14 +26,30 @@ public class WelcomeGUI extends JFrame {
         // Pozitioneaza fereastra in centrul ecranului
         this.setLocationRelativeTo(null);
         // Creaza mainPanel - panel principal care include toate elementele
-        JPanel mainPanel = new JPanel();
+        JLabel mainLabel = new JLabel();
+        mainLabel.setSize(700,400);
+        try {
+            img = ImageIO.read(new File("C:\\Users\\Ioana\\Desktop\\backgroundPic.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Modifica dimensiunile la imaginea de background
+        Image dimg = img.getScaledInstance(mainLabel.getWidth(), mainLabel.getHeight(),
+                Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(dimg);
+        // Adauga imaginea de fond la mainLabel
+        mainLabel.setIcon(imageIcon);
+        mainLabel.setLayout(new BorderLayout());
+        this.setContentPane(mainLabel);
+
+        //JPanel mainPanel = new JPanel();
         // Textul din fereastra principala
         JLabel welcomeLabel = new JLabel("Student Registration System",JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 28));
         // Precizeaza layout pentru mainPanel
-        mainPanel.setLayout(new BorderLayout());
+       // mainPanel.setLayout(new BorderLayout());
         // Culoarea de fond
-        mainPanel.setBackground(Color.CYAN);
+        //mainPanel.setBackground(Color.CYAN);
         // Creaza buttonPanel care va contine butoanele
         JPanel buttonPanel = new JPanel();
         // Precizeaza layout pentru buttonPanel
@@ -52,12 +76,13 @@ public class WelcomeGUI extends JFrame {
         buttonPanel.add(registerButton);
         buttonPanel.add(listButton);
         // Adauga buttonPanel la mainPanel
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainLabel.add(buttonPanel, BorderLayout.SOUTH);
         // Adauga textul la mainPAnel
-        mainPanel.add(welcomeLabel);
+        mainLabel.add(welcomeLabel);
         // Adauga mainPanel la Frame
-        this.add(mainPanel);
+        //this.add(mainLabel);
         // Face fereastra vizibila
+        this.pack();
         this.setVisible(true);
     }
     // Pentru events
@@ -67,19 +92,19 @@ public class WelcomeGUI extends JFrame {
             // Sursa eventului este butonul "EXIT"
             if (e.getSource() == exitButton){
                 // Inchide fereastra Welcome
-                dispose();
+                System.exit(0);
 
             }// Sursa eventului este butonul "REGISTER"
             else if (e.getSource() == registerButton) {
                 // Deschide fereastra Register
-                new RegisterGUI();
+                new RegisterGUI(myStmt);
                 // Inchide fereastra Welcome
                 dispose();
 
             }// Sursa eventului este butonul "LIST"
             else if (e.getSource() == listButton) {
                 // Deschide fereastra List
-                new ListGUI();
+                new ListGUI(myStmt);
                 // Inchide fereastra Welcome
                 dispose();
             }

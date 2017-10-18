@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Statement;
 
 public class RegisterGUI extends JFrame {
     JButton exitButton,registerButton;
@@ -11,8 +12,10 @@ public class RegisterGUI extends JFrame {
     JTextField firstNameField, lastNameField;
     JList anJList;
     DefaultListModel aniList = new DefaultListModel();
+    Statement myStmt;
 
-    public RegisterGUI() {
+    public RegisterGUI(Statement myStmt) {
+        this.myStmt = myStmt;
         // Seteaza fereastra Register: titlu, mod de inchidere, dimensiuni si pozitia
         this.setTitle("Student Registration System");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,9 +98,13 @@ public class RegisterGUI extends JFrame {
             // Sursa eventului este butonul "EXIT"
             if (e.getSource() == exitButton){
                 // Inchide fereastra Register
-                dispose();
+                System.exit(0);
             } else if (e.getSource() == registerButton) {
                 //Aici vom adauga acces la baza de date in curand
+                Student student = new Student(MainApp.studentCount, firstNameField.getText(),lastNameField.getText(),(int)anJList.getSelectedValue());
+                student.saveStudent(myStmt);
+                MainApp.studentCount++;
+                new WelcomeGUI(myStmt);
                 dispose();
             }
         }
